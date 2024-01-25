@@ -40,5 +40,4 @@ jobs:
       - name: Test application
         run: 'python -m unittest discover'
 
-      - name: Display workflow link
-        run: echo "Workflow link: ${{ github.run_url }}"
+     
