@@ -1,48 +1,75 @@
 name: Continuous Integration
 
 on:
+
   push:
+
     branches:
+
       - main
+
       - jenk
 
-  pull_request:
-    types:
-      - opened
-      - synchronize
+  workflow_dispatch:
+
+  
 
 jobs:
-  build:
+
+  my_first_job:
+
     runs-on: ubuntu-latest
 
+ 
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
+    
+
+steps:
+- uses: actions/checkout@v4
+- uses: actions/setup-python@v5
+  with:
+    python-version: '3.10' 
+- run: python my_script.py
+
+ 
+
+    - name: Checkout code
+
+      uses: actions/checkout@v3
+
       with:
-        python-version: 3.8
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        ref: jenk
 
-    - name: Run tests
-      run: |
-        python -m unittest discover
+ 
 
-    - name: Update repository
-      if: github.event_name == 'push' && (github.event_ref == 'refs/heads/main' || github.event_ref == 'refs/heads/jenks')
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add .
-        git commit -m "Auto-update project code [skip ci]"
+    - name: Show directory
 
-        git push origin ${{ github.event_ref_name }}
+      run: 'pwd'
 
-    - name: Display workflow link
-      run: echo "Workflow link: ${{ github.run_url }}"
+ 
+
+    - name: List files
+
+      run: 'ls -al'
+
+ 
+
+    - name: Install Dependencies
+
+      run: 'mvn compile'
+
+ 
+
+    - name: Build application
+
+      run: 'mvn package -DskipTests'
+
+ 
+
+    - name: Test application
+
+      run: 'mvn test'
 
